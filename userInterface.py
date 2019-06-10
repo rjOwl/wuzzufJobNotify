@@ -12,7 +12,7 @@ Scroll and look for jobs yourself, you might end up finding a "NOT NEW" good job
     print("link:", AUTAMENDY_URL)
     while True:
         keyword = input("Your keyword: ")
-        wuz = wuzzufWrapper()
+        wuz = wuzzufCrawler()
         jobs = wuz.getJobs(keyword)
         if wuz.STATUS_CODE_ERROR != jobs or wuz.INTERNET_ERROR != jobs:
             newJobs = wuz.filter(30, jobs)
