@@ -2,7 +2,7 @@ from __future__ import print_function
 from datetime import datetime, date
 from time import sleep
 import os
-import wuzzufWrapper
+import wuzzufCrawler
 
 if __name__=="__main__":
     print("#"*100+"""
