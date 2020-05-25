@@ -44,7 +44,7 @@ class wuzzuf():
             toaster = ToastNotifier()
             toaster.show_toast(title="WUZZUF bot\nNew Job Found!", msg=jobLink, duration=7, icon_path=r"logo-blue.ico", )
             winsound.Beep(FREQUENCY, DURATION)
-            # webbrowser.open(jobLink)
+            webbrowser.open(jobLink)
 
 
 
