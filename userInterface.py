@@ -1,25 +1,33 @@
-from __future__ import print_function
-from datetime import datetime, date
+# Created Dec, 2018
+
 from time import sleep
-import os
-import wuzzufCrawler
+from CONSTANTS import *
+from wuzzufCrawler import  wuzzuf
+from colorama import init, Fore, Back, Style
+from datetime import datetime, date
 
 if __name__=="__main__":
-    print("#"*100+"""
+
+    init(autoreset=True)
+    print(Fore.YELLOW +"#"*100+"""
 App will work to get you the most new jobs based on your keywords.
 But, don't leave it all to the app. 
 Scroll and look for jobs yourself, you might end up finding a "NOT NEW" good job opportunity\n"""+"#"*100+"\n")
-    print("link:", AUTAMENDY_URL)
+    keyword = input("Your keyword: ")
+    print("Main page:", BASE.format(keyword))
+    wuz = wuzzuf()
     while True:
-        keyword = input("Your keyword: ")
-        wuz = wuzzufCrawler()
+        current_time = datetime.now().strftime("%b %d %Y %I:%M%p")
+        print(Fore.BLUE+"Time now is: "+ current_time) #.strftime("%b %d %Y %I:%M%p"))
         jobs = wuz.getJobs(keyword)
-        if wuz.STATUS_CODE_ERROR != jobs or wuz.INTERNET_ERROR != jobs:
-            newJobs = wuz.filter(30, jobs)
+        if STATUS_CODE_ERROR != jobs or INTERNET_ERROR != jobs:
+            newJobs = wuz.filter(500, jobs)
             if len(newJobs) >0:
                 for i in newJobs:
                     wuz.jobNotify(i)
             else:
-                print("No new jobs found!")
+                print(Fore.RED+"No new jobs found!\n")
         else:
             print(jobs)
+        timeToWaitInSeconds = MINUTES_TO_WAIT*60
+        sleep(timeToWaitInSeconds)

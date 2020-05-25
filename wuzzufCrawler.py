@@ -1,21 +1,17 @@
 import requests
 from bs4 import BeautifulSoup
 import webbrowser
+from datetime import datetime, date
 from sys import modules
+from CONSTANTS import *
+
 try:
     import winsound
     from win10toast import ToastNotifier
-    frequency = 2500  # Set Frequency To 2500 Hertz
-    duration = 1000  # Set Duration To 1000 ms == 1 second
 except Exception as e:
     print(e)
 
-HEADERS = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.75 Safari/537.36'}
-BASE="https://wuzzuf.net/search/jobs?q={}"
-STATUS_CODE_ERROR=-1
-INTERNET_ERROR = -2
-
-class wuzzuf(requests):
+class wuzzuf():
     def getJobs(self, keyword):
         url = BASE.format(keyword)
         try:
@@ -34,6 +30,7 @@ class wuzzuf(requests):
         pagePosts = soup.findAll('div', {'class': 'new-time'})
         all_links = [x.a['href'] for x in pagePosts]
         all_times = [datetime.strptime(("".join(x.find('time', {'class': 'time1 job-date'})['datetime'].replace("T", " ").split("+")[0])),   "%Y-%m-%d %H:%M:%S") for x in pagePosts]
+        jobs_times_human_readable = [datetime.strftime(datetime.strptime(("".join(x.find('time', {'class': 'time1 job-date'})['datetime'].replace("T", " ").split("+")[0])),   "%Y-%m-%d %H:%M:%S"), "%b %d %Y %I:%M%p") for x in pagePosts]
         for i in range (len(all_times)):
             time_difference = datetime.now() - all_times[i]#datetime.strptime((eachTime),   "%Y-%m-%d %H:%M:%S")
             elapsed_time_in_minutes = divmod(time_difference.days * 86400 + time_difference.seconds, 60)[0]
@@ -42,11 +39,11 @@ class wuzzuf(requests):
         return newJobs
 
 
-    def jobNotify(jobLink):
+    def jobNotify(self, jobLink):
         if 'winsound' in modules and 'win10toast' in modules:
             toaster = ToastNotifier()
             toaster.show_toast("New Job Found!", jobLink)
-            winsound.Beep(frequency, duration)
+            winsound.Beep(FREQUENCY, DURATION)
             webbrowser.open(jobLink)
 
 
