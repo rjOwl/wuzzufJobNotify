@@ -21,13 +21,15 @@ Scroll and look for jobs yourself, you might end up finding a "NOT NEW" good job
         print(Fore.BLUE+"Time now is: "+ current_time) #.strftime("%b %d %Y %I:%M%p"))
         jobs = wuz.getJobs(keyword)
         if STATUS_CODE_ERROR != jobs or INTERNET_ERROR != jobs:
-            newJobs = wuz.filter(500, jobs)
+            newJobs = wuz.filter(900, jobs)
             if len(newJobs) >0:
+                print(Fore.GREEN+"Found New Job:")
                 for i in newJobs:
+                    print(i)
                     wuz.jobNotify(i)
             else:
                 print(Fore.RED+"No new jobs found!\n")
         else:
-            print(jobs)
+            print(jobs)        
         timeToWaitInSeconds = MINUTES_TO_WAIT*60
         sleep(timeToWaitInSeconds)

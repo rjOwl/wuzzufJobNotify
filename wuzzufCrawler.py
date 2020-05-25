@@ -42,9 +42,9 @@ class wuzzuf():
     def jobNotify(self, jobLink):
         if 'winsound' in modules and 'win10toast' in modules:
             toaster = ToastNotifier()
-            toaster.show_toast("New Job Found!", jobLink)
+            toaster.show_toast(title="WUZZUF bot\nNew Job Found!", msg=jobLink, duration=7, icon_path=r"logo-blue.ico", )
             winsound.Beep(FREQUENCY, DURATION)
-            webbrowser.open(jobLink)
+            # webbrowser.open(jobLink)
 
 
 
